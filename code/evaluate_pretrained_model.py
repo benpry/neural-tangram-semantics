@@ -64,10 +64,11 @@ def get_accuracy_metrics(probs):
     """
     Get the accuracy metrics for the model
     """
-    trace = np.trace(probs)
-    accuracy = trace / probs.shape[0]
+    mean_prob = np.trace(probs) / probs.shape[0]
+    max_probs = np.argmax(probs, axis=1)
+    accuracy = np.mean(max_probs == np.arange(probs.shape[0]))
 
-    return accuracy
+    return mean_prob, accuracy
 
 
 def mean_ci_boot(data, statfunc=np.mean, n_samples=10000, ci=0.95):
@@ -94,16 +95,25 @@ if __name__ == "__main__":
     tangrams = load_tangrams(12)
 
     df_data = pd.read_csv(here(f"data/{args.data_filepath}"))
+    mean_probs = []
     accuracies = []
     for i in range(args.n_batches):
         batch = get_eval_batch(df_data)
-        accuracies.append(
-            get_accuracy_metrics(get_model_probs(model, processor, batch, tangrams))
+        mean_p, acc = get_accuracy_metrics(
+            get_model_probs(model, processor, batch, tangrams)
         )
+        accuracies.append(acc)
+        mean_probs.append(mean_p)
 
     probs = get_model_probs(model, processor, batch, tangrams)
 
-    print(accuracies)
+    mean_mean_prob = np.mean(mean_probs)
+    _, lower, upper = mean_ci_boot(mean_probs)
+    print(
+        f"Mean probability of true utterance: {mean_mean_prob:.3f} [{lower:.3f}, {upper:.3f}] (chance: {1/12:.3f})"
+    )
     mean_accuracy = np.mean(accuracies)
     _, lower, upper = mean_ci_boot(accuracies)
-    print(f"Mean accuracy: {mean_accuracy} [{lower}, {upper}] (chance: {1/12})")
+    print(
+        f"Mean accuracy: {mean_accuracy:.3f} [{lower:.3f}, {upper:.3f}] (chance: {1/12:.3f})"
+    )
