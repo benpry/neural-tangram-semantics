@@ -1,6 +1,7 @@
 """
 Evaluate all the pretrained kilogram models
 """
+
 import os
 import glob
 from evaluate_pretrained_model import main as evaluate_model
@@ -18,7 +19,7 @@ eval_args = DotDict(
 
 
 def main():
-    models_dir = os.environ["SCR_ROOT_DIR"] + "/kilogram-models"
+    models_dir = os.environ["SCR_ROOT_DIR"] + "kilogram-models"
     rows = []
     # traverse the directory to find the pretrained model paths
     for model_path in glob.glob(models_dir + "/clip_*/*/model*.pth"):
@@ -28,7 +29,7 @@ def main():
         rows.append({**evaluation, "model": model_path})
 
     df = pd.DataFrame(rows)
-    df.to_csv("evaluation_results.csv")
+    df.to_csv(here("data/evaluation_results.csv"))
 
 
 if __name__ == "__main__":

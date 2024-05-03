@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-#SBATCH --job-name=beta_bernoulli_uniform
+#SBATCH --job-name=kilogram_models_sweep
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --account=cocoflops

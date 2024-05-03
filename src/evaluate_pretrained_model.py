@@ -1,6 +1,7 @@
 """
 Evaluate a pretrained CLIP model on the tangram data
 """
+
 from argparse import ArgumentParser
 from string import ascii_uppercase
 from pyprojroot import here
@@ -9,7 +10,6 @@ import torch
 import pandas as pd
 from transformers import CLIPProcessor, CLIPModel
 import numpy as np
-import scipy
 from kilogram_clip import FTCLIP, CLIPPreprocessor
 
 
@@ -26,7 +26,7 @@ def load_tangrams(n):
 def set_up_model(model_name, use_kilogram=False):
     if use_kilogram:
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        checkpoint = torch.load(here(f"models/model0.pth"), map_location=device)
+        checkpoint = torch.load(model_name, map_location=device)
         model = FTCLIP()
         model.load_state_dict(checkpoint["model_state_dict"])
         processor = CLIPPreprocessor(device=device)
@@ -77,7 +77,7 @@ def get_model_probs(model, processor, batch, tangrams, use_kilogram=False):
             processed_images = processor.preprocess_images(tangrams.values())
             text_encodings = processor.preprocess_texts(utterances)
             similarities = model(processed_images, text_encodings)
-            probs = similarities.t().softmax(dim=1).detach().numpy()
+            probs = similarities.t().softmax(dim=1).detach().cpu().numpy()
     else:
         inputs = processor(
             text=utterances, images=tangrams, return_tensors="pt", padding=True
@@ -85,7 +85,7 @@ def get_model_probs(model, processor, batch, tangrams, use_kilogram=False):
         with torch.no_grad():
             outputs = model(**inputs)
             logits_per_image = outputs.logits_per_image
-        probs = logits_per_image.softmax(dim=1).detach().numpy()
+        probs = logits_per_image.softmax(dim=1).detach().cpu().numpy()
 
     return probs
 
@@ -100,8 +100,8 @@ def get_accuracy_metrics(probs, labels):
     correct_answer_probs = probs[np.arange(probs.shape[0]), label_idxs]
     print(f"correct_answer_probs: {correct_answer_probs}")
     mean_prob = np.mean(correct_answer_probs)
-    max_probs = np.argmax(probs, axis=1)
-    accuracy = np.mean(max_probs == label_idxs)
+    argmax_probs = np.argmax(probs, axis=1)
+    accuracy = np.mean(argmax_probs == label_idxs)
 
     return mean_prob, accuracy
 
@@ -126,12 +126,12 @@ def main(args):
     df_data = pd.read_csv(here(f"data/{args.data_filepath}"))
     mean_probs = []
     accuracies = []
-    batches = get_batches(df_data, n_batches=args.n_batches)
+    batches = get_batches(df_data, batch_size=args.batch_size)
     for batch in batches:
         probs = get_model_probs(
             model, processor, batch, tangrams, use_kilogram=args.use_kilogram
         )
-        print(f"probs: {probs}")
+        # print(f"probs: {probs}")
         mean_p, acc = get_accuracy_metrics(probs, batch["labels"])
         accuracies.append(acc)
         mean_probs.append(mean_p)
@@ -139,22 +139,22 @@ def main(args):
     mean_mean_prob = np.mean(mean_probs)
     _, mean_prob_lower, mean_prob_upper = mean_ci_boot(mean_probs)
     mean_accuracy = np.mean(accuracies)
-    _, mean_prob_lower, mean_prob_upper = mean_ci_boot(accuracies)
+    _, accuracy_lower, accuracy_upper = mean_ci_boot(accuracies)
 
     return {
         "mean_mean_prob": mean_mean_prob,
         "mean_prob_lower": mean_prob_lower,
         "mean_prob_upper": mean_prob_upper,
         "mean_accuracy": mean_accuracy,
-        "accuracy_lower": mean_prob_lower,
-        "accuracy_upper": mean_prob_upper,
+        "accuracy_lower": accuracy_lower,
+        "accuracy_upper": accuracy_upper,
     }
 
 
 parser = ArgumentParser()
 parser.add_argument("--model_name", type=str, default="openai/clip-vit-base-patch32")
 parser.add_argument("--data_filepath", type=str, default="speaker_utterances.csv")
-parser.add_argument("--n_batches", type=int, default=10)
+parser.add_argument("--n_batches", default="all")
 parser.add_argument("--use_kilogram", action="store_true")
 
 if __name__ == "__main__":
