@@ -83,4 +83,7 @@ class CLIPPreprocessor:
         return torch.stack(preprocessed_images)
 
     def preprocess_texts(self, texts: list[str]):
-        return self._tokenizer(texts)
+        try:
+            return self._tokenizer(texts)
+        except RuntimeError:
+            return -1
