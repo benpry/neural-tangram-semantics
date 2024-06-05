@@ -171,7 +171,7 @@ def main(args):
     mean_accuracy = np.mean(accuracies)
     _, accuracy_lower, accuracy_upper = mean_ci_boot(accuracies)
 
-    model_name_file = args.model_name.replace("/", ":")
+    model_name_file = args.model_name.replace("/", "|")
     pd.DataFrame(rows).to_csv(
         here(
             f"data/stimulus_predictions/clip_stimulus_level_predictions_model-{model_name_file}.csv"
