@@ -53,6 +53,8 @@ def get_batches(df, processor, use_kilogram, batch_size=10, n_batches="all"):
         )
     else:
         df["too_long"] = df["text"].apply(lambda x: len(processor(x).input_ids) > 77)
+
+    print(f"proportion too long: {df['too_long'].mean()}")
     df_filtered = df[~df["too_long"]]
 
     # get the batches ready
@@ -83,6 +85,8 @@ def get_batches(df, processor, use_kilogram, batch_size=10, n_batches="all"):
 def get_model_probs(model, processor, batch, tangrams_list, use_kilogram=False):
     """
     Get the model's predictions for each tangram
+    TODO: this is just get_model_logits from readouts/generate_dataset, but with a softmax
+    so there's some refactoring to be done
     """
     # compile the inputs
     utterances = batch["utterance"]
@@ -93,6 +97,7 @@ def get_model_probs(model, processor, batch, tangrams_list, use_kilogram=False):
             processed_images = processor.preprocess_images(tangrams_list)
             text_encodings = processor.preprocess_texts(utterances)
             similarities = model(processed_images, text_encodings)
+            logits = logits_per_image.t().detach().cpu().numpy()
             probs = similarities.t().softmax(dim=1).detach().cpu().numpy()
     else:
         inputs = processor(
@@ -102,9 +107,10 @@ def get_model_probs(model, processor, batch, tangrams_list, use_kilogram=False):
         with torch.no_grad():
             outputs = model(**inputs)
             logits_per_image = outputs.logits_per_image
-        probs = logits_per_image.t().softmax(dim=1).detach().cpu().numpy()
+            logits = logits_per_image.t().detach().cpu().numpy()
+            probs = logits_per_image.t().softmax(dim=1).detach().cpu().numpy()
 
-    return probs
+    return probs, logits
 
 
 def get_accuracy_metrics(probs, labels):
