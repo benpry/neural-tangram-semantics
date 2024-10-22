@@ -21,22 +21,30 @@ def main(args):
     tangrams_list = [tangrams[t] for t in TANGRAM_NAMES]
 
     df_data = pd.read_csv(here(f"data/{args.data_filepath}"))
+    if "text" not in df_data.columns and "partial" in df_data.columns:
+        df_data["text"] = df_data["partial"].apply(str)
     batches = get_batches(
         df_data, processor, args.use_kilogram, batch_size=args.batch_size
     )
     rows = []
     for batch in tqdm(batches):
-        print(f"batch: {batch}")
         _, logits = get_model_probs(
             model, processor, batch, tangrams_list, use_kilogram=args.use_kilogram
         )
-        rows.extend(
-            {
-                "utterance": batch["utterance"],
-                "label": batch["label"],
-                "logits": logits,
-            }
-        )
+        result = {
+            "gameId": batch["gameId"],
+            "trialNum": batch["trialNum"],
+            "repNum": batch["repNum"],
+            "utterance": batch["utterance"],
+            "label": batch["label"],
+            "logits": logits,
+        }
+        batch_list = [dict(zip(result, t)) for t in zip(*result.values())]
+        rows.extend(batch_list)
 
     model_name_file = args.model_name.replace("/", "--")
-    pd.DataFrame(rows).to_csv(here(f"data/logits-{model_name_file}.csv"))
+    if "incremental" in args.data_filepath:
+        output_filename = f"incremental-logits-{model_name_file}"
+    else:
+        output_filename = f"logits-{model_name_file}"
+    pd.DataFrame(rows).to_csv(here(f"data/stimulus-logits/{output_filename}.csv"))

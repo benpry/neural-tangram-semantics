@@ -45,6 +45,7 @@ def get_batches(df, processor, use_kilogram, batch_size=10, n_batches="all"):
     """
     Get a batch of utterances, one for each tangram
     """
+    print(f"use kilogram: {use_kilogram}")
 
     # filter out utterances that are too long for CLIP
     if use_kilogram:
@@ -62,9 +63,7 @@ def get_batches(df, processor, use_kilogram, batch_size=10, n_batches="all"):
         df_filtered = df_filtered.sample(n_batches * batch_size)
     else:
         n_batches = len(df_filtered) // batch_size
-    df_batches = df_filtered[
-        ["gameId", "trialNum", "repNum", "playerId", "text", "tangram"]
-    ]
+    df_batches = df_filtered[["gameId", "trialNum", "repNum", "text", "tangram"]]
     batches = []
     for i in range(n_batches):
         batch = df_batches.iloc[i * batch_size : (i + 1) * batch_size]
@@ -73,7 +72,6 @@ def get_batches(df, processor, use_kilogram, batch_size=10, n_batches="all"):
                 "gameId": batch["gameId"].tolist(),
                 "trialNum": batch["trialNum"].tolist(),
                 "repNum": batch["repNum"].tolist(),
-                "playerId": batch["playerId"].tolist(),
                 "utterance": batch["text"].tolist(),
                 "label": batch["tangram"].tolist(),
             }
@@ -203,6 +201,12 @@ parser.add_argument("--n_batches", default="all")
 parser.add_argument("--use_kilogram", action="store_true")
 
 if __name__ == "__main__":
-    args = parser.parse_args()
-    result = main(args)
-    print(result)
+    args = DotDict(
+        {
+            "model_name": "openai/clip-vit-large-patch14",
+            "data_filepath": "speaker_utterances.csv",
+            "batch_size": 32,
+            "use_kilogram": False,
+        }
+    )
+    main(args)

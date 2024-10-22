@@ -14,6 +14,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import cross_val_score
 from get_stimulus_logits import main as get_stimulus_logits
+from evaluate_pretrained_model import TANGRAM_NAMES
 from xgboost import XGBClassifier
 from util import DotDict
 
@@ -32,8 +33,6 @@ classifiers = {
         "params": [
             {"penalty": None},
             {"penalty": "l2"},
-            {"penalty": "l1"},
-            {"penalty": "elasticnet"},
         ],
     },
     "MLP": {
@@ -80,17 +79,24 @@ def try_classifiers(features, labels, n_folds):
 
 def main(args):
     # load the data
-    data_filepath = here(f"data/logits-{args.model_name.replace('/', '--')}.csv")
+    model_name_for_file = args.model_name.replace("/", "--")
+    data_filepath = here(f"data/stimulus-logits/logits-{model_name_for_file}.csv")
     if not os.path.exists(data_filepath):
         get_stimulus_logits(args)
-    df_logits = pd.read_csv()
+    df_logits = pd.read_csv(data_filepath)
 
-    # TODO get the features and labels
-    feats = df_logits["logits"].values
-    labels = df_logits["label"].values
+    feats = np.array(
+        [
+            np.fromstring(x.strip().replace("\n", "")[1:-1], sep=" ")
+            for x in df_logits["logits"].values
+        ]
+    )
+    labels = [TANGRAM_NAMES.index(l) for l in df_logits["label"].values]
 
     df = try_classifiers(feats, labels, n_folds=10)
-    df.to_csv(here(f"data/classifier_comparison-{args.model_name}.csv"), index=False)
+    df.to_csv(
+        here(f"data/classifier_comparison-{model_name_for_file}.csv"), index=False
+    )
 
 
 if __name__ == "__main__":
