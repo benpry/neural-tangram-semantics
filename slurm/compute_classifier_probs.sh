@@ -8,7 +8,7 @@
 #SBATCH --gres gpu:1
 #SBATCH --output=slurm-output/classifier-probs.out
 #SBATCH --error=slurm-output/classifier-probs.err
-#SBATCH --nodelist=cocoflops1
+#SBATCH --nodelist=cocoflops-hgx-1
 
 source ~/.zshrc
 cd ~/neural-tangram-semantics
