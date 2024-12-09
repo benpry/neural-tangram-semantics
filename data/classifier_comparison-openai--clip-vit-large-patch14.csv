@@ -1,0 +1,16 @@
+classifier,params,accuracy
+RandomForest,{'n_estimators': 10},0.45597827998133367
+RandomForest,{'n_estimators': 50},0.5061446277810567
+RandomForest,{'n_estimators': 100},0.5148225607629238
+RandomForest,{'n_estimators': 500},0.5218919264410553
+LogisticRegression,{'penalty': None},0.4992205817919847
+LogisticRegression,{'penalty': 'l2'},0.49756304393900946
+MLP,"{'hidden_layer_sizes': (32,)}",0.4993185704116188
+MLP,"{'hidden_layer_sizes': (32, 32)}",0.5208179721202895
+MLP,"{'hidden_layer_sizes': (100,)}",0.5193069657458017
+MLP,"{'hidden_layer_sizes': (100, 100)}",0.5503624438418763
+MLP,"{'hidden_layer_sizes': (512,)}",0.5311535379974396
+MLP,"{'hidden_layer_sizes': (1028,)}",0.5281312638821171
+xgb,{},0.5091181451923323
+xgb,{'n_estimators': 10},0.4803545648345361
+xgb,{'n_estimators': 100},0.5091181451923323
