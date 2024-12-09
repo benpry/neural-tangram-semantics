@@ -16,11 +16,13 @@ from tqdm import tqdm
 
 def main(args):
 
+    # load the models and data
     model, processor = set_up_model(args.model_name)
     tangrams = load_tangrams(12)
     tangrams_list = [tangrams[t] for t in TANGRAM_NAMES]
+    df_data = pd.read_csv(here(args.data_filepath))
 
-    df_data = pd.read_csv(here(f"data/{args.data_filepath}"))
+    # if the data has a "partial" column, use that as the text
     if "text" not in df_data.columns and "partial" in df_data.columns:
         df_data["text"] = df_data["partial"].apply(str)
     batches = get_batches(
@@ -43,8 +45,6 @@ def main(args):
         rows.extend(batch_list)
 
     model_name_file = args.model_name.replace("/", "--")
-    if "incremental" in args.data_filepath:
-        output_filename = f"incremental-logits-{model_name_file}"
-    else:
-        output_filename = f"logits-{model_name_file}"
+    dataset_name = args.data_filepath.split("/")[-1].split(".")[0]
+    output_filename = f"logits-{dataset_name}-{model_name_file}"
     pd.DataFrame(rows).to_csv(here(f"data/stimulus-logits/{output_filename}.csv"))

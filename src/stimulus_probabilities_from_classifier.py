@@ -16,7 +16,7 @@ from util import DotDict
 classifier_name = "MLP_100_100"
 
 
-def get_probs_from_classifier(feats, labels, n_folds=10):
+def get_probs_from_classifier_kfold(feats, labels, n_folds=10):
     clf = MLPClassifier(hidden_layer_sizes=(100, 100), max_iter=2000)
     kf = KFold(n_splits=n_folds, shuffle=False)
     rows = []
@@ -31,6 +31,20 @@ def get_probs_from_classifier(feats, labels, n_folds=10):
             row["raw_logits"] = test_feats[i]
             row["tangram"] = TANGRAM_NAMES[test_labels[i]]
             rows.append(row)
+
+    return pd.DataFrame(rows)
+
+
+def get_probs_from_classifier(feats, labels):
+    clf = MLPClassifier(hidden_layer_sizes=(100, 100), max_iter=2000)
+    clf.fit(feats, labels)
+    probs = clf.predict_proba(feats)
+    rows = []
+    for i, prob_vec in enumerate(probs):
+        row = {f"p_{TANGRAM_NAMES[j]}": p for j, p in enumerate(prob_vec)}
+        row["raw_logits"] = feats[i]
+        row["tangram"] = TANGRAM_NAMES[labels[i]]
+        rows.append(row)
 
     return pd.DataFrame(rows)
 
@@ -51,18 +65,30 @@ def main(args):
     )
     labels = np.array([TANGRAM_NAMES.index(l) for l in df_logits["label"].values])
 
-    df_preds = get_probs_from_classifier(feats, labels, n_folds=10)
+    if args.kfold:
+        df_preds = get_probs_from_classifier_kfold(feats, labels, n_folds=10)
+    else:
+        df_preds = get_probs_from_classifier(feats, labels)
+
     df_preds["utterance"] = df_logits["utterance"]
     df_preds["gameId"] = df_logits["gameId"]
     df_preds["trialNum"] = df_logits["trialNum"]
     df_preds["repNum"] = df_logits["repNum"]
     df_preds["playerId"] = df_logits["playerId"]
-    df_preds.to_csv(
-        here(
-            f"data/stimulus_predictions/{classifier_name}-{model_name_for_file}-probs.csv"
-        ),
-        index=False,
-    )
+    if args.kfold:
+        df_preds.to_csv(
+            here(
+                f"data/stimulus_predictions/{classifier_name}-{model_name_for_file}-probs-kfold.csv"
+            ),
+            index=False,
+        )
+    else:
+        df_preds.to_csv(
+            here(
+                f"data/stimulus_predictions/{classifier_name}-{model_name_for_file}-probs.csv"
+            ),
+            index=False,
+        )
 
 
 if __name__ == "__main__":
@@ -72,6 +98,7 @@ if __name__ == "__main__":
             "data_filepath": "speaker_utterances.csv",
             "batch_size": 32,
             "use_kilogram": False,
+            "kfold": False,
         }
     )
     main(args)

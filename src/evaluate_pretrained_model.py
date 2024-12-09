@@ -63,10 +63,13 @@ def get_batches(df, processor, use_kilogram, batch_size=10, n_batches="all"):
         df_filtered = df_filtered.sample(n_batches * batch_size)
     else:
         n_batches = len(df_filtered) // batch_size
+        if n_batches * batch_size < len(df_filtered):
+            n_batches += 1
     df_batches = df_filtered[["gameId", "trialNum", "repNum", "text", "tangram"]]
     batches = []
     for i in range(n_batches):
-        batch = df_batches.iloc[i * batch_size : (i + 1) * batch_size]
+        batch_end = min((i + 1) * batch_size, len(df_batches))
+        batch = df_batches.iloc[i * batch_size : batch_end]
         batches.append(
             {
                 "gameId": batch["gameId"].tolist(),
@@ -83,8 +86,6 @@ def get_batches(df, processor, use_kilogram, batch_size=10, n_batches="all"):
 def get_model_probs(model, processor, batch, tangrams_list, use_kilogram=False):
     """
     Get the model's predictions for each tangram
-    TODO: this is just get_model_logits from readouts/generate_dataset, but with a softmax
-    so there's some refactoring to be done
     """
     # compile the inputs
     utterances = batch["utterance"]
