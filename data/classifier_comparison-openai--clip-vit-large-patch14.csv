@@ -1,16 +1,152 @@
-classifier,params,accuracy
-RandomForest,{'n_estimators': 10},0.45597827998133367
-RandomForest,{'n_estimators': 50},0.5061446277810567
-RandomForest,{'n_estimators': 100},0.5148225607629238
-RandomForest,{'n_estimators': 500},0.5218919264410553
-LogisticRegression,{'penalty': None},0.4992205817919847
-LogisticRegression,{'penalty': 'l2'},0.49756304393900946
-MLP,"{'hidden_layer_sizes': (32,)}",0.4993185704116188
-MLP,"{'hidden_layer_sizes': (32, 32)}",0.5208179721202895
-MLP,"{'hidden_layer_sizes': (100,)}",0.5193069657458017
-MLP,"{'hidden_layer_sizes': (100, 100)}",0.5503624438418763
-MLP,"{'hidden_layer_sizes': (512,)}",0.5311535379974396
-MLP,"{'hidden_layer_sizes': (1028,)}",0.5281312638821171
-xgb,{},0.5091181451923323
-xgb,{'n_estimators': 10},0.4803545648345361
-xgb,{'n_estimators': 100},0.5091181451923323
+classifier,params,fold,accuracy
+no_readout,,,0.30996489859594384
+RandomForest,{'n_estimators': 10},0.0,0.442495126705653
+RandomForest,{'n_estimators': 10},1.0,0.4337231968810916
+RandomForest,{'n_estimators': 10},2.0,0.47537786445636276
+RandomForest,{'n_estimators': 10},3.0,0.45099951243295955
+RandomForest,{'n_estimators': 10},4.0,0.4475865431496831
+RandomForest,{'n_estimators': 10},5.0,0.4661140906874695
+RandomForest,{'n_estimators': 10},6.0,0.4661140906874695
+RandomForest,{'n_estimators': 10},7.0,0.4841540711847879
+RandomForest,{'n_estimators': 10},8.0,0.45294978059483176
+RandomForest,{'n_estimators': 10},9.0,0.4597757191613847
+RandomForest,{'n_estimators': 50},0.0,0.49171539961013644
+RandomForest,{'n_estimators': 50},1.0,0.48586744639376217
+RandomForest,{'n_estimators': 50},2.0,0.5236470014627012
+RandomForest,{'n_estimators': 50},3.0,0.507557289127255
+RandomForest,{'n_estimators': 50},4.0,0.4992686494392979
+RandomForest,{'n_estimators': 50},5.0,0.5041443198439786
+RandomForest,{'n_estimators': 50},6.0,0.5221843003412969
+RandomForest,{'n_estimators': 50},7.0,0.5402242808386153
+RandomForest,{'n_estimators': 50},8.0,0.49439297903461726
+RandomForest,{'n_estimators': 50},9.0,0.500243783520234
+RandomForest,{'n_estimators': 100},0.0,0.5190058479532164
+RandomForest,{'n_estimators': 100},1.0,0.4819688109161793
+RandomForest,{'n_estimators': 100},2.0,0.5411994149195515
+RandomForest,{'n_estimators': 100},3.0,0.5177961969770843
+RandomForest,{'n_estimators': 100},4.0,0.5197464651389566
+RandomForest,{'n_estimators': 100},5.0,0.49829351535836175
+RandomForest,{'n_estimators': 100},6.0,0.5251097025841053
+RandomForest,{'n_estimators': 100},7.0,0.5485129205265724
+RandomForest,{'n_estimators': 100},8.0,0.5012189176011702
+RandomForest,{'n_estimators': 100},9.0,0.5114578254509995
+RandomForest,{'n_estimators': 500},0.0,0.5190058479532164
+RandomForest,{'n_estimators': 500},1.0,0.4844054580896686
+RandomForest,{'n_estimators': 500},2.0,0.5455875182837641
+RandomForest,{'n_estimators': 500},3.0,0.5216967333008289
+RandomForest,{'n_estimators': 500},4.0,0.5270599707459775
+RandomForest,{'n_estimators': 500},5.0,0.5080448561677231
+RandomForest,{'n_estimators': 500},6.0,0.5251097025841053
+RandomForest,{'n_estimators': 500},7.0,0.5475377864456362
+RandomForest,{'n_estimators': 500},8.0,0.5065821550463189
+RandomForest,{'n_estimators': 500},9.0,0.5290102389078498
+LogisticRegression,{'penalty': None},0.0,0.5043859649122807
+LogisticRegression,{'penalty': None},1.0,0.48148148148148145
+LogisticRegression,{'penalty': None},2.0,0.5216967333008289
+LogisticRegression,{'penalty': None},3.0,0.5095075572891272
+LogisticRegression,{'penalty': None},4.0,0.48464163822525597
+LogisticRegression,{'penalty': None},5.0,0.4904924427108727
+LogisticRegression,{'penalty': None},6.0,0.5104826913700634
+LogisticRegression,{'penalty': None},7.0,0.5007313505607021
+LogisticRegression,{'penalty': None},8.0,0.48659190638712824
+LogisticRegression,{'penalty': None},9.0,0.5021940516821063
+LogisticRegression,{'penalty': 'l2'},0.0,0.5053606237816765
+LogisticRegression,{'penalty': 'l2'},1.0,0.4766081871345029
+LogisticRegression,{'penalty': 'l2'},2.0,0.5168210628961483
+LogisticRegression,{'penalty': 'l2'},3.0,0.5090199902486592
+LogisticRegression,{'penalty': 'l2'},4.0,0.47976596782057535
+LogisticRegression,{'penalty': 'l2'},5.0,0.4929302779132131
+LogisticRegression,{'penalty': 'l2'},6.0,0.5090199902486592
+LogisticRegression,{'penalty': 'l2'},7.0,0.49439297903461726
+LogisticRegression,{'penalty': 'l2'},8.0,0.4880546075085324
+LogisticRegression,{'penalty': 'l2'},9.0,0.5036567528035105
+MLP,"{'hidden_layer_sizes': (32,)}",0.0,0.5063352826510721
+MLP,"{'hidden_layer_sizes': (32,)}",1.0,0.48294346978557506
+MLP,"{'hidden_layer_sizes': (32,)}",2.0,0.5192588980984886
+MLP,"{'hidden_layer_sizes': (32,)}",3.0,0.5241345685031692
+MLP,"{'hidden_layer_sizes': (32,)}",4.0,0.5017064846416383
+MLP,"{'hidden_layer_sizes': (32,)}",5.0,0.49390541199414917
+MLP,"{'hidden_layer_sizes': (32,)}",6.0,0.514383227693808
+MLP,"{'hidden_layer_sizes': (32,)}",7.0,0.4885421745490005
+MLP,"{'hidden_layer_sizes': (32,)}",8.0,0.49195514383227695
+MLP,"{'hidden_layer_sizes': (32,)}",9.0,0.5021940516821063
+MLP,"{'hidden_layer_sizes': (32, 32)}",0.0,0.5219298245614035
+MLP,"{'hidden_layer_sizes': (32, 32)}",1.0,0.4853801169590643
+MLP,"{'hidden_layer_sizes': (32, 32)}",2.0,0.5329107752315944
+MLP,"{'hidden_layer_sizes': (32, 32)}",3.0,0.5236470014627012
+MLP,"{'hidden_layer_sizes': (32, 32)}",4.0,0.5090199902486592
+MLP,"{'hidden_layer_sizes': (32, 32)}",5.0,0.49731838127742567
+MLP,"{'hidden_layer_sizes': (32, 32)}",6.0,0.507557289127255
+MLP,"{'hidden_layer_sizes': (32, 32)}",7.0,0.5319356411506582
+MLP,"{'hidden_layer_sizes': (32, 32)}",8.0,0.5124329595319357
+MLP,"{'hidden_layer_sizes': (32, 32)}",9.0,0.5241345685031692
+MLP,"{'hidden_layer_sizes': (100,)}",0.0,0.526803118908382
+MLP,"{'hidden_layer_sizes': (100,)}",1.0,0.48830409356725146
+MLP,"{'hidden_layer_sizes': (100,)}",2.0,0.5363237445148707
+MLP,"{'hidden_layer_sizes': (100,)}",3.0,0.5353486104339347
+MLP,"{'hidden_layer_sizes': (100,)}",4.0,0.5197464651389566
+MLP,"{'hidden_layer_sizes': (100,)}",5.0,0.514870794734276
+MLP,"{'hidden_layer_sizes': (100,)}",6.0,0.530472940029254
+MLP,"{'hidden_layer_sizes': (100,)}",7.0,0.5173086299366163
+MLP,"{'hidden_layer_sizes': (100,)}",8.0,0.5114578254509995
+MLP,"{'hidden_layer_sizes': (100,)}",9.0,0.5290102389078498
+MLP,"{'hidden_layer_sizes': (100, 100)}",0.0,0.5453216374269005
+MLP,"{'hidden_layer_sizes': (100, 100)}",1.0,0.5194931773879142
+MLP,"{'hidden_layer_sizes': (100, 100)}",2.0,0.5816674792784008
+MLP,"{'hidden_layer_sizes': (100, 100)}",3.0,0.5460750853242321
+MLP,"{'hidden_layer_sizes': (100, 100)}",4.0,0.552901023890785
+MLP,"{'hidden_layer_sizes': (100, 100)}",5.0,0.530472940029254
+MLP,"{'hidden_layer_sizes': (100, 100)}",6.0,0.5699658703071673
+MLP,"{'hidden_layer_sizes': (100, 100)}",7.0,0.5641150658215505
+MLP,"{'hidden_layer_sizes': (100, 100)}",8.0,0.5397367137981472
+MLP,"{'hidden_layer_sizes': (100, 100)}",9.0,0.5416869819600195
+MLP,"{'hidden_layer_sizes': (512,)}",0.0,0.5487329434697856
+MLP,"{'hidden_layer_sizes': (512,)}",1.0,0.5029239766081871
+MLP,"{'hidden_layer_sizes': (512,)}",2.0,0.5460750853242321
+MLP,"{'hidden_layer_sizes': (512,)}",3.0,0.5426621160409556
+MLP,"{'hidden_layer_sizes': (512,)}",4.0,0.49878108239882984
+MLP,"{'hidden_layer_sizes': (512,)}",5.0,0.529985372988786
+MLP,"{'hidden_layer_sizes': (512,)}",6.0,0.5309605070697221
+MLP,"{'hidden_layer_sizes': (512,)}",7.0,0.5421745490004876
+MLP,"{'hidden_layer_sizes': (512,)}",8.0,0.5246221355436372
+MLP,"{'hidden_layer_sizes': (512,)}",9.0,0.5411994149195515
+MLP,"{'hidden_layer_sizes': (1028,)}",0.0,0.5248538011695907
+MLP,"{'hidden_layer_sizes': (1028,)}",1.0,0.47953216374269003
+MLP,"{'hidden_layer_sizes': (1028,)}",2.0,0.5504631886884447
+MLP,"{'hidden_layer_sizes': (1028,)}",3.0,0.5358361774744027
+MLP,"{'hidden_layer_sizes': (1028,)}",4.0,0.530472940029254
+MLP,"{'hidden_layer_sizes': (1028,)}",5.0,0.523159434422233
+MLP,"{'hidden_layer_sizes': (1028,)}",6.0,0.5363237445148707
+MLP,"{'hidden_layer_sizes': (1028,)}",7.0,0.530472940029254
+MLP,"{'hidden_layer_sizes': (1028,)}",8.0,0.5236470014627012
+MLP,"{'hidden_layer_sizes': (1028,)}",9.0,0.5475377864456362
+xgb,{},0.0,0.5014619883040936
+xgb,{},1.0,0.4853801169590643
+xgb,{},2.0,0.5363237445148707
+xgb,{},3.0,0.5246221355436372
+xgb,{},4.0,0.5046318868844466
+xgb,{},5.0,0.4826913700633837
+xgb,{},6.0,0.523159434422233
+xgb,{},7.0,0.5358361774744027
+xgb,{},8.0,0.49731838127742567
+xgb,{},9.0,0.499756216479766
+xgb,{'n_estimators': 10},0.0,0.4702729044834308
+xgb,{'n_estimators': 10},1.0,0.45760233918128657
+xgb,{'n_estimators': 10},2.0,0.5036567528035105
+xgb,{'n_estimators': 10},3.0,0.5017064846416383
+xgb,{'n_estimators': 10},4.0,0.4783032666991711
+xgb,{'n_estimators': 10},5.0,0.4680643588493418
+xgb,{'n_estimators': 10},6.0,0.48951730862993664
+xgb,{'n_estimators': 10},7.0,0.499756216479766
+xgb,{'n_estimators': 10},8.0,0.4680643588493418
+xgb,{'n_estimators': 10},9.0,0.4666016577279376
+xgb,{'n_estimators': 100},0.0,0.5014619883040936
+xgb,{'n_estimators': 100},1.0,0.4853801169590643
+xgb,{'n_estimators': 100},2.0,0.5363237445148707
+xgb,{'n_estimators': 100},3.0,0.5246221355436372
+xgb,{'n_estimators': 100},4.0,0.5046318868844466
+xgb,{'n_estimators': 100},5.0,0.4826913700633837
+xgb,{'n_estimators': 100},6.0,0.523159434422233
+xgb,{'n_estimators': 100},7.0,0.5358361774744027
+xgb,{'n_estimators': 100},8.0,0.49731838127742567
+xgb,{'n_estimators': 100},9.0,0.499756216479766

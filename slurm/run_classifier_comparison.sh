@@ -5,7 +5,6 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
-#SBATCH --gres gpu:1
 #SBATCH --output=slurm-output/classifier-comparison.log
 #SBATCH --error=slurm-output/classifier-comparison.err
 #SBATCH --nodelist=cocoflops1

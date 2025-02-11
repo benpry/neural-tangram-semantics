@@ -2,7 +2,6 @@
 Evaluate a pretrained CLIP model on the tangram data
 """
 
-from argparse import ArgumentParser
 from string import ascii_uppercase
 from pyprojroot import here
 from PIL import Image
@@ -193,13 +192,6 @@ def main(args):
         "accuracy_upper": accuracy_upper,
     }
 
-
-parser = ArgumentParser()
-parser.add_argument("--model_name", type=str, default="openai/clip-vit-base-patch32")
-parser.add_argument("--data_filepath", type=str, default="speaker_utterances.csv")
-parser.add_argument("--batch_size", default=100)
-parser.add_argument("--n_batches", default="all")
-parser.add_argument("--use_kilogram", action="store_true")
 
 if __name__ == "__main__":
     args = DotDict(
